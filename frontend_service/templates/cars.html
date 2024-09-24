@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Available Cars</title>
+</head>
+<body>
+    <h1>Available Cars</h1>
+    <div id="carList"></div>
+    <script>
+        fetch('/car_inventory_service/cars')
+            .then(response => response.json())
+            .then(data => {
+                const carList = document.getElementById('carList');
+                data.forEach(car => {
+                    carList.innerHTML += `<div>${car.model} (ID: ${car.id})</div>`;
+                });
+            });
+    </script>
+</body>
+</html>

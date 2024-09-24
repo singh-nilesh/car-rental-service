@@ -1,0 +1,86 @@
+
+follow the directorie structure
+
+rental_car_service/
+|-- booking_service
+|   |-- Dockerfile
+|   |-- app.py
+|   `-- database.db
+|-- car_inventory_service
+|   |-- Dockerfile
+|   |-- app.py
+|   |-- database.py
+|   `-- uploads
+|-- docker-compose.yml
+|-- frontend_service
+|   |-- Dockerfile
+|   |-- app.py
+|   |-- static
+|   |   |-- css
+|   |   |   `-- styles.css
+|   |   `-- js
+|   |       `-- scripts.js
+|   `-- templates
+|       |-- add_car.html
+|       |-- cars.html
+|       |-- index.html
+|       |-- login.html
+|       |-- register.html
+|       `-- book_car.html
+`-- user_service
+    |-- Dockerfile
+    |-- app.py
+    `-- database.db
+
+
+version: '3.8'
+
+services:
+  user_service:
+    build: ./user_service
+    container_name: user_service
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./user_service:/app
+    networks:
+      - rental_network
+
+  car_inventory_service:
+    build: ./car_inventory_service
+    container_name: car_inventory_service
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./car_inventory_service:/app
+      - ./car_inventory_service/uploads:/app/uploads
+    networks:
+      - rental_network
+
+  booking_service:
+    build: ./booking_service
+    container_name: booking_service
+    ports:
+      - "5003:5003"
+    volumes:
+      - ./booking_service:/app
+    networks:
+      - rental_network
+
+  frontend_service:
+    build: ./frontend_service
+    container_name: frontend_service
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./frontend_service:/app
+    networks:
+      - rental_network
+    depends_on:
+      - user_service
+      - car_inventory_service
+      - booking_service
+
+networks:
+  rental_network:
+    driver: bridge
