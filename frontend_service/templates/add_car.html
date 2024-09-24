@@ -1,30 +1,18 @@
-<!-- frontend_service/templates/add_car.html -->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Add Car - Rental Car Service</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <script src="{{ url_for('static', filename='js/scripts.js') }}" defer></script>
+    <meta charset="UTF-8">
+    <title>Add Car</title>
 </head>
 <body>
     <h1>Add a New Car</h1>
-    <div id="add-car-section">
-        <form id="add-car-form" enctype="multipart/form-data">
-            <label for="make">Make:</label><br>
-            <input type="text" id="make" name="make" required><br>
-            <label for="model">Model:</label><br>
-            <input type="text" id="model" name="model" required><br>
-            <label for="year">Year:</label><br>
-            <input type="number" id="year" name="year" required><br>
-            <label for="price_per_day">Price per Day:</label><br>
-            <input type="number" step="0.01" id="price_per_day" name="price_per_day" required><br>
-            <label for="photo">Photo:</label><br>
-            <input type="file" id="photo" name="photo" accept="image/*" required><br><br>
-            <button type="submit">Add Car</button>
-        </form>
-        <p id="add-car-message" class="message"></p>
-        <a href="{{ url_for('index') }}">Back to Home</a>
-    </div>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="text" name="make" placeholder="Make" required>
+        <input type="text" name="model" placeholder="Model" required>
+        <input type="number" name="year" placeholder="Year" required>
+        <input type="number" name="price_per_day" placeholder="Price per Day" required>
+        <input type="file" name="photo" required>
+        <button type="submit">Add Car</button>
+    </form>
 </body>
 </html>

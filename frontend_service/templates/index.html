@@ -1,35 +1,15 @@
-<!-- frontend_service/templates/index.html -->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rental Car Service</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <script src="{{ url_for('static', filename='js/scripts.js') }}" defer></script>
 </head>
 <body>
-    <h1>Available Cars</h1>
-    <div id="user-section">
-        {% if session.username %}
-            <p>Welcome, {{ session.username }}!</p>
-            <button id="logout-button">Logout</button>
-            <a href="{{ url_for('add_car_page') }}">Add Car</a>
-        {% else %}
-            <a href="{{ url_for('login_page') }}">Login</a> | 
-            <a href="{{ url_for('register_page') }}">Register</a>
-        {% endif %}
-    </div>
-    <div class="car-list" id="car-list">
-        {% for car in cars %}
-            <div class="car-item">
-                <img src="{{ url_for('uploaded_file', filename=car.photo) }}" alt="{{ car.make }} {{ car.model }}" width="200">
-                <h3>{{ car.make }} {{ car.model }} ({{ car.year }})</h3>
-                <p>Price per day: ${{ car.price_per_day }}</p>
-                {% if session.username %}
-                    <button class="book-button" data-car-id="{{ car.id }}">Book Now</button>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </div>
+    <h1>Welcome to the Rental Car Service</h1>
+    <a href="/register">Register</a>
+    <a href="/login">Login</a>
+    <a href="/cars">View Cars</a>
 </body>
 </html>

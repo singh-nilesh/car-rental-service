@@ -1,8 +1,5 @@
-# car_inventory_service/app.py
-
 from flask import Flask, request, jsonify
 import sqlite3
-from database import init_db
 from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
@@ -13,13 +10,30 @@ CORS(app, supports_credentials=True)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+DATABASE = 'database.db'
+
+# Initialize database
+def init_db():
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS cars (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        owner_id INTEGER NOT NULL,
+                        make TEXT NOT NULL,
+                        model TEXT NOT NULL,
+                        year INTEGER NOT NULL,
+                        price_per_day REAL NOT NULL,
+                        photo TEXT,
+                        FOREIGN KEY(owner_id) REFERENCES users(id)
+                      )''')
+    conn.commit()
+    conn.close()
+
 init_db()
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-DATABASE = 'database.db'
 
 # Add Car
 @app.route('/add_car', methods=['POST'])
@@ -109,6 +123,4 @@ def get_cars():
     return jsonify(car_list), 200
 
 if __name__ == '__main__':
-    if not os.path.exists('uploads'):
-        os.makedirs('uploads')
     app.run(host='0.0.0.0', port=5002, debug=True)
