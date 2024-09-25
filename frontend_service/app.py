@@ -71,14 +71,26 @@ def add_car():
         # Submit the car details to the backend
         response = requests.post(f'{CAR_INVENTORY_SERVICE_URL}/add_car', data=data, files=files)
 
-        # Check the response from the backend and handle errors
+        # Log the raw response (status code, headers, content)
+        print(f"Status Code: {response.status_code}")
+        print(f"Headers: {response.headers}")
+        print(f"Raw Response Content: {response.text}")  # Logs raw text response
+
+        # Check the response status code and handle accordingly
         if response.status_code == 201:
             return redirect(url_for('all_cars'))
         else:
-            # Log error message to the console
-            print(f"Error: {response.json()}")
+            # Log error message to the console, if available in JSON
+            try:
+                error_message = response.json()
+                print(f"Error: {error_message}")
+            except ValueError:  # Catch the case where response is not JSON
+                print("Response is not JSON. Raw response:", response.text)
+            
+            # Optionally, handle the non-JSON error message 
 
     return render_template('add_car.html')
+
 
 
 @app.route('/book_car/<int:car_id>', methods=['POST'])

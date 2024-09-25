@@ -31,7 +31,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
 
 
-# add Cars
+#add car
 @app.route('/add_car', methods=['POST'])
 def add_car():
     try:

@@ -8,6 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
+    <!-- Navigation Bar -->
     <nav>
         <ul>
             <li><a href="/all_cars">Home</a></li>
@@ -17,20 +18,33 @@
         </ul>
     </nav>
 
+    <!-- Main Content -->
     <h1>All Cars</h1>
 
+    <!-- Car Listings -->
     <div class="cars-list">
         <ul>
             {% for car in cars %}
-                <li>
-                    {{ car.make }} {{ car.model }} - ${{ car.price_per_day }} per day
+                <li style="margin-bottom: 20px;">
+                    <strong>{{ car.make }} {{ car.model }}</strong> - ${{ car.price_per_day }} per day
+                    <br>
+
+                    <!-- Display car image if available -->
                     {% if car.photo %}
-                        <img src="data:image/jpeg;base64,{{ car.photo }}" alt="Car Image" style="width:100px;height:auto;">
+                        <img src="data:image/jpeg;base64,{{ car.photo }}" alt="{{ car.make }} {{ car.model }}" style="width:150px; height:auto; margin-top: 10px;">
+                    {% else %}
+                        <p>No image available</p>
                     {% endif %}
-                    <form action="{{ url_for('book_car', car_id=car.id) }}" method="POST">
-                        <input type="date" name="start_date" required>
-                        <input type="date" name="end_date" required>
-                        <button type="submit">Book</button>
+                    
+                    <!-- Booking Form -->
+                    <form action="{{ url_for('book_car', car_id=car.id) }}" method="POST" style="margin-top: 10px;">
+                        <label for="start_date_{{ car.id }}">Start Date:</label>
+                        <input type="date" id="start_date_{{ car.id }}" name="start_date" required>
+                        
+                        <label for="end_date_{{ car.id }}">End Date:</label>
+                        <input type="date" id="end_date_{{ car.id }}" name="end_date" required>
+
+                        <button type="submit" style="margin-top: 5px;">Book</button>
                     </form>
                 </li>
             {% endfor %}
