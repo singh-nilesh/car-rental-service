@@ -9,8 +9,10 @@ CAR_INVENTORY_SERVICE_URL = 'http://car_inventory_service:5002'
 BOOKING_SERVICE_URL = 'http://booking_service:5003'
 
 @app.route('/')
-def index():
-    return render_template('index.html')
+def home():
+    response = requests.get(f'{CAR_INVENTORY_SERVICE_URL}/cars')
+    cars = response.json()
+    return render_template('index.html', cars=cars)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -38,13 +40,20 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('home'))
 
-@app.route('/cars')
+@app.route('/all_cars')
 def all_cars():
     response = requests.get(f'{CAR_INVENTORY_SERVICE_URL}/cars')
     cars = response.json()
     return render_template('all_cars.html', cars=cars)
+
+@app.route('/my_cars')
+def my_cars():
+    user_id = session.get('user_id')
+    response = requests.get(f'{CAR_INVENTORY_SERVICE_URL}/user_cars/{user_id}')
+    user_cars = response.json()
+    return render_template('my_cars.html', cars=user_cars)
 
 @app.route('/add_car', methods=['GET', 'POST'])
 def add_car():
@@ -54,11 +63,23 @@ def add_car():
         year = request.form['year']
         price_per_day = request.form['price_per_day']
         photo = request.files['photo']
+
+        # Prepare data to send to the backend
         data = {'owner_id': session['user_id'], 'make': make, 'model': model, 'year': year, 'price_per_day': price_per_day}
         files = {'photo': photo}
-        requests.post(f'{CAR_INVENTORY_SERVICE_URL}/add_car', data=data, files=files)
-        return redirect(url_for('all_cars'))
+
+        # Submit the car details to the backend
+        response = requests.post(f'{CAR_INVENTORY_SERVICE_URL}/add_car', data=data, files=files)
+
+        # Check the response from the backend and handle errors
+        if response.status_code == 201:
+            return redirect(url_for('all_cars'))
+        else:
+            # Log error message to the console
+            print(f"Error: {response.json()}")
+
     return render_template('add_car.html')
+
 
 @app.route('/book_car/<int:car_id>', methods=['POST'])
 def book_car(car_id):

@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rental Car Service</title>
+    <title>My Cars</title>
     <link rel="stylesheet" href="../static/css/styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
     <nav>
         <ul>
-            <li><a href="/register">Register</a></li>
-            <li><a href="/login">Login</a></li>
+            <li><a href="/all_cars">Home</a></li>
+            <li><a href="/add_car">Add Car</a></li>
+            <li><a href="/all_cars">All Cars</a></li>
+            <li><a href="/logout">Logout</a></li>
         </ul>
     </nav>
-    
-    <h1>Welcome to the Rental Car Service</h1>
 
-    <div class="available-cars">
-        <h2>Available Cars</h2>
+    <h1>My Cars</h1>
+    <div class="my-cars">
         <ul>
             {% for car in cars %}
                 <li>
@@ -26,10 +26,9 @@
                     {% if car.photo %}
                         <img src="data:image/jpeg;base64,{{ car.photo }}" alt="Car Image" style="width:100px;height:auto;">
                     {% endif %}
-                    <form action="{{ url_for('book_car', car_id=car.id) }}" method="POST">
-                        <input type="date" name="start_date" required>
-                        <input type="date" name="end_date" required>
-                        <button type="submit">Book</button>
+                    <form action="{{ url_for('delete_car', car_id=car.id) }}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit">Delete</button>
                     </form>
                 </li>
             {% endfor %}

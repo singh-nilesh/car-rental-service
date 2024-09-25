@@ -2,17 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Car</title>
+    <link rel="stylesheet" href="..//static/css/styles.css">
+    
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="/all_cars">Home</a></li>
+            <li><a href="/my_cars">My Cars</a></li>
+            <li><a href="/all_cars">All Cars</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+
     <h1>Add a New Car</h1>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="text" name="make" placeholder="Make" required>
-        <input type="text" name="model" placeholder="Model" required>
-        <input type="number" name="year" placeholder="Year" required>
-        <input type="number" name="price_per_day" placeholder="Price per Day" required>
-        <input type="file" name="photo" required>
+    <form method="POST" enctype="multipart/form-data" onsubmit="submitForm(event)">
+        <label for="make">Make:</label>
+        <input type="text" id="make" name="make" required>
+        
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" required>
+        
+        <label for="year">Year:</label>
+        <input type="number" id="year" name="year" required>
+        
+        <label for="price_per_day">Price per Day:</label>
+        <input type="number" id="price_per_day" name="price_per_day" required>
+        
+        <label for="photo">Car Photo:</label>
+        <input type="file" id="photo" name="photo" accept="image/*" required>
+        
         <button type="submit">Add Car</button>
     </form>
+    
+    <script>
+        function submitForm(event) {
+            event.preventDefault();  // Prevent the default form submission
+        
+            var formData = new FormData(event.target);
+        
+            fetch('/add_car', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log("Raw Response:", response);
+                
+                // Check if the response is JSON before parsing
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.indexOf('application/json') !== -1) {
+                    return response.json();
+                } else {
+                    return response.text().then(text => {
+                        console.error("Response is not JSON. Raw text:", text);
+                        throw new Error('Response is not JSON');
+                    });
+                }
+            })
+            .then(data => {
+                if (data.message) {
+                    console.log("Success:", data);
+                } else if (data.error) {
+                    console.error("Error:", data);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+        </script>        
 </body>
 </html>

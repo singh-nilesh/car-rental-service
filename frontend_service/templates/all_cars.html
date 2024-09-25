@@ -2,21 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Cars</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
-    <h1>Available Cars</h1>
-    <ul>
-        {% for car in cars %}
-            <li>
-                {{ car.make }} {{ car.model }} - ${{ car.price_per_day }} per day
-                <form action="{{ url_for('book_car', car_id=car.id) }}" method="POST">
-                    <input type="date" name="start_date" required>
-                    <input type="date" name="end_date" required>
-                    <button type="submit">Book Car</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
+    <nav>
+        <ul>
+            <li><a href="/all_cars">Home</a></li>
+            <li><a href="/my_cars">My Cars</a></li>
+            <li><a href="/add_car">Add Car</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+
+    <h1>All Cars</h1>
+
+    <div class="cars-list">
+        <ul>
+            {% for car in cars %}
+                <li>
+                    {{ car.make }} {{ car.model }} - ${{ car.price_per_day }} per day
+                    {% if car.photo %}
+                        <img src="data:image/jpeg;base64,{{ car.photo }}" alt="Car Image" style="width:100px;height:auto;">
+                    {% endif %}
+                    <form action="{{ url_for('book_car', car_id=car.id) }}" method="POST">
+                        <input type="date" name="start_date" required>
+                        <input type="date" name="end_date" required>
+                        <button type="submit">Book</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
