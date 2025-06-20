@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,18 +13,17 @@
         <ul>
             <li><a href="/all_cars">Home</a></li>
             <li><a href="/my_cars">My Cars</a></li>
-            <li><a href="/all_cars">All Cars</a></li>
             <li><a href="/logout">Logout</a></li>
         </ul>
     </nav>
 
     <h1>Add a New Car</h1>
-    <form action="/add_car" method="POST" padding-left="30%" enctype="multipart/form-data">
+    <form action="/add_car" method="POST" padding-left="30%">
         <input type="text" name="make" placeholder="Make" required> <br>
         <input type="text" name="model" placeholder="Model" required> <br>
         <input type="number" name="year" placeholder="Year" required> <br>
         <input type="number" name="price_per_day" placeholder="Price per Day" required> <br>
-        <input type="file" name="photo" accept="image/*" required><br>
+        <textarea name="discripton" placeholder="Description" rows="3" required>Description</textarea><br>
         <button type="submit">Add Car</button>
     </form>
 </body>

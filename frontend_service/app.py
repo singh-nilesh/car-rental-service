@@ -62,36 +62,24 @@ def add_car():
         model = request.form['model']
         year = request.form['year']
         price_per_day = request.form['price_per_day']
-        photo = request.files['photo']
+        discripton = request.form['discripton']
 
         # Prepare data to send to the backend
-        data = {'owner_id': session['user_id'], 'make': make, 'model': model, 'year': year, 'price_per_day': price_per_day}
-        files = {'photo': photo}
+        data = {'owner_id': session['user_id'], 'make': make, 'model': model, 'year': year, 'price_per_day': price_per_day, 'discripton': discripton}
 
         # Submit the car details to the backend
-        response = requests.post(f'{CAR_INVENTORY_SERVICE_URL}/add_car', data=data, files=files)
+        response = requests.post(f'{CAR_INVENTORY_SERVICE_URL}/add_car', data=data)
 
-        # Log the raw response (status code, headers, content)
-        print(f"Status Code: {response.status_code}")
-        print(f"Headers: {response.headers}")
-        print(f"Raw Response Content: {response.text}")  # Logs raw text response
-
-        # Check the response status code and handle accordingly
         if response.status_code == 201:
             return redirect(url_for('all_cars'))
         else:
-            # Log error message to the console, if available in JSON
             try:
                 error_message = response.json()
                 print(f"Error: {error_message}")
-            except ValueError:  # Catch the case where response is not JSON
+            except ValueError:
                 print("Response is not JSON. Raw response:", response.text)
-            
-            # Optionally, handle the non-JSON error message 
 
     return render_template('add_car.html')
-
-
 
 @app.route('/book_car/<int:car_id>', methods=['POST'])
 def book_car(car_id):

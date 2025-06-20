@@ -7,7 +7,6 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
 DATABASE = 'database.db'
-
 # Initialize database
 def init_db():
     with sqlite3.connect(DATABASE) as conn:
@@ -19,56 +18,39 @@ def init_db():
                             model TEXT NOT NULL,
                             year INTEGER NOT NULL,
                             price_per_day REAL NOT NULL,
-                            photo BLOB,
+                            discripton TEXT NOT NULL,
                             FOREIGN KEY(owner_id) REFERENCES users(id)
                         )''')
         conn.commit()
 
 init_db()
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
-
-
-#add car
+# Add car
 @app.route('/add_car', methods=['POST'])
 def add_car():
     try:
-        # Check if the photo file is in the request
-        if 'photo' not in request.files:
-            return jsonify({'message': 'No photo uploaded'}), 400
-
-        photo = request.files['photo']
-
-        # Check if file is allowed
-        if photo and allowed_file(photo.filename):
-            photo_data = photo.read()  # Read the photo data
-        else:
-            return jsonify({'message': 'Invalid file type'}), 400
-
         data = request.form
         owner_id = data.get('owner_id')
         make = data.get('make')
         model = data.get('model')
         year = data.get('year')
         price_per_day = data.get('price_per_day')
+        discripton = data.get('discripton')
 
-        if not all([owner_id, make, model, year, price_per_day]):
+        if not all([owner_id, make, model, year, price_per_day, discripton]):
             return jsonify({'message': 'All fields are required'}), 400
 
         # Insert car details into the database
         with sqlite3.connect(DATABASE) as conn:
             cursor = conn.cursor()
-            cursor.execute("""INSERT INTO cars (owner_id, make, model, year, price_per_day, photo)
+            cursor.execute("""INSERT INTO cars (owner_id, make, model, year, price_per_day, discripton)
                               VALUES (?, ?, ?, ?, ?, ?)""",
-                           (owner_id, make, model, int(year), float(price_per_day), photo_data))
+                           (owner_id, make, model, int(year), float(price_per_day), discripton))
             conn.commit()
 
         return jsonify({'message': 'Car added successfully'}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
     
 
 # Update Car

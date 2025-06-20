@@ -5,45 +5,22 @@ services:
     container_name: frontend_service
     ports:
       - "5000:5000"  # Exposing the frontend on port 5000
-    depends_on:
-      - car_inventory_service
-      - user_service
-      - booking_service
-    environment:
-      - FLASK_ENV=development
-    networks:
-      - car_rental_network
+    
 
   car_inventory_service:
     build: ./car_inventory_service  # Path to the car inventory service
     container_name: car_inventory_service
     ports:
       - "5002:5002"  # Exposing car inventory service on port 5002
-    environment:
-      - FLASK_ENV=development
-    networks:
-      - car_rental_network
-
+    
   user_service:
     build: ./user_service  # Path to the user service
     container_name: user_service
     ports:
       - "5001:5001"  # Exposing user service on port 5001
-    environment:
-      - FLASK_ENV=development
-    networks:
-      - car_rental_network
-
+    
   booking_service:
     build: ./booking_service  # Path to the booking service
     container_name: booking_service
     ports:
       - "5003:5003"  # Exposing booking service on port 5003
-    environment:
-      - FLASK_ENV=development
-    networks:
-      - car_rental_network
-
-networks:
-  car_rental_network:
-    driver: bridge
