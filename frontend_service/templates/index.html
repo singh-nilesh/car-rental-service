@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rental Car Service</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
@@ -15,25 +15,36 @@
         </ul>
     </nav>
     
-    <h1>Welcome to the Rental Car Service</h1>
+    <div class="container">
+        <h1>Welcome to the Rental Car Service</h1>
 
-    <div class="available-cars">
-        <h2>Available Cars</h2>
-        <ul>
-            {% for car in cars %}
-                <li>
-                    {{ car.make }} {{ car.model }} - ${{ car.price_per_day }} per day
-                    {% if car.photo %}
-                        <img src="data:image/jpeg;base64,{{ car.photo }}" alt="Car Image" style="width:100px;height:auto;">
-                    {% endif %}
-                    <form action="{{ url_for('book_car', car_id=car.id) }}" method="POST">
-                        <input type="date" name="start_date" required>
-                        <input type="date" name="end_date" required>
-                        <button type="submit">Book</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
+        <div class="available-cars">
+            <h2 class="text-center">Available Cars</h2>
+            <ul>
+                {% for car in cars %}
+                    <li>
+                        <div class="car-details">
+                            <h3 class="car-name">{{ car.make }} {{ car.model }}</h3>
+                            <p class="car-price">${{ car.price_per_day }} per day</p>
+                        </div>
+                        {% if car.photo %}
+                            <img src="data:image/jpeg;base64,{{ car.photo }}" alt="{{ car.make }} {{ car.model }}" class="car-image">
+                        {% endif %}
+                        <form action="{{ url_for('book_car', car_id=car.id) }}" method="POST">
+                            <div class="form-group">
+                                <label for="start_date_{{ car.id }}">Start Date:</label>
+                                <input type="date" id="start_date_{{ car.id }}" name="start_date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_date_{{ car.id }}">End Date:</label>
+                                <input type="date" id="end_date_{{ car.id }}" name="end_date" required>
+                            </div>
+                            <button type="submit" class="btn">Book Now</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </body>
 </html>

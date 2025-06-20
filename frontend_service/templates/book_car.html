@@ -1,25 +1,46 @@
-<!-- frontend_service/templates/book_car.html -->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Car - Rental Car Service</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
-    <script src="../static/js/scripts.js" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/scripts.js') }}" defer></script>
 </head>
 <body>
-    <h1>Book Car</h1>
-    <div id="book-car-section">
-        <form id="book-car-form">
-            <input type="hidden" id="car_id" name="car_id" value="{{ car_id }}">
-            <label for="start_date">Start Date:</label><br>
-            <input type="date" id="start_date" name="start_date" required><br>
-            <label for="end_date">End Date:</label><br>
-            <input type="date" id="end_date" name="end_date" required><br><br>
-            <button type="submit">Book Now</button>
-        </form>
-        <p id="book-car-message" class="message"></p>
-        <a href="{{ url_for('index') }}">Back to Home</a>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/all_cars">All Cars</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Book a Car</h1>
+        
+        <div id="book-car-section" class="form">
+            <form id="book-car-form">
+                <input type="hidden" id="car_id" name="car_id" value="{{ car_id }}">
+                
+                <div class="form-group">
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" id="start_date" name="start_date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="end_date">End Date:</label>
+                    <input type="date" id="end_date" name="end_date" required>
+                </div>
+                
+                <button type="submit" class="btn btn-success">Book Now</button>
+            </form>
+            
+            <p id="book-car-message" class="message"></p>
+            
+            <div class="text-center" style="margin-top: 20px;">
+                <a href="{{ url_for('index') }}" class="btn">Back to Home</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -1,5 +1,21 @@
 // frontend_service/static/js/scripts.js
 
+// Helper function to display messages with our new styling
+function showMessage(element, isSuccess, message) {
+    // Remove any existing alert classes
+    element.classList.remove('alert-success', 'alert-danger');
+    
+    // Add the appropriate class
+    element.classList.add(isSuccess ? 'alert-success' : 'alert-danger');
+    element.classList.add('alert');
+    
+    // Set the message
+    element.textContent = message;
+    
+    // Make sure the element is visible
+    element.style.display = 'block';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Handle Registration
     const registerForm = document.getElementById('register-form');
@@ -21,15 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = document.getElementById('register-message');
 
             if (response.status === 201) {
-                message.style.color = 'green';
-                message.textContent = data.message;
+                showMessage(message, true, data.message);
                 registerForm.reset();
                 setTimeout(() => {
                     window.location.href = '/login';
                 }, 2000);
             } else {
-                message.style.color = 'red';
-                message.textContent = data.message;
+                showMessage(message, false, data.message);
             }
         });
     }
@@ -54,14 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = document.getElementById('login-message');
 
             if (response.status === 200) {
-                message.style.color = 'green';
-                message.textContent = data.message;
+                showMessage(message, true, data.message);
                 setTimeout(() => {
                     window.location.href = '/';
                 }, 1000);
             } else {
-                message.style.color = 'red';
-                message.textContent = data.message;
+                showMessage(message, false, data.message);
             }
         });
     }
@@ -104,15 +116,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = document.getElementById('add-car-message');
 
             if (response.status === 201) {
-                message.style.color = 'green';
-                message.textContent = data.message;
+                showMessage(message, true, data.message);
                 addCarForm.reset();
                 setTimeout(() => {
                     window.location.href = '/';
                 }, 2000);
             } else {
-                message.style.color = 'red';
-                message.textContent = data.message;
+                showMessage(message, false, data.message);
             }
         });
     }
@@ -138,15 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = document.getElementById('book-car-message');
 
             if (response.status === 201) {
-                message.style.color = 'green';
-                message.textContent = data.message;
+                showMessage(message, true, data.message);
                 bookCarForm.reset();
                 setTimeout(() => {
                     window.location.href = '/';
                 }, 2000);
             } else {
-                message.style.color = 'red';
-                message.textContent = data.message;
+                showMessage(message, false, data.message);
             }
         });
     }

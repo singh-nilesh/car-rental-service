@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Cars</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
+    <title>All Cars - Car Rental Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
@@ -18,37 +18,45 @@
         </ul>
     </nav>
 
-    <!-- Main Content -->
-    <h1>All Cars</h1>
+    <div class="container">
+        <!-- Main Content -->
+        <h1>All Cars</h1>
 
-    <!-- Car Listings -->
-    <div class="cars-list">
-        <ul>
-            {% for car in cars %}
-                <li style="margin-bottom: 20px;">
-                    <strong>{{ car.make }} {{ car.model }}</strong> - ${{ car.price_per_day }} per day
-                    <br>
+        <!-- Car Listings -->
+        <div class="cars-list">
+            <ul>
+                {% for car in cars %}
+                    <li>
+                        <div class="car-details">
+                            <h3 class="car-name">{{ car.make }} {{ car.model }}</h3>
+                            <p class="car-price">${{ car.price_per_day }} per day</p>
+                        </div>
 
-                    <!-- Display car image if available -->
-                    {% if car.photo %}
-                        <img src="data:image/jpeg;base64,{{ car.photo }}" alt="{{ car.make }} {{ car.model }}" style="width:150px; height:auto; margin-top: 10px;">
-                    {% else %}
-                        <p>No image available</p>
-                    {% endif %}
-                    
-                    <!-- Booking Form -->
-                    <form action="{{ url_for('book_car', car_id=car.id) }}" method="POST" style="margin-top: 10px;">
-                        <label for="start_date_{{ car.id }}">Start Date:</label>
-                        <input type="date" id="start_date_{{ car.id }}" name="start_date" required>
+                        <!-- Display car image if available -->
+                        {% if car.photo %}
+                            <img src="data:image/jpeg;base64,{{ car.photo }}" alt="{{ car.make }} {{ car.model }}" class="car-image">
+                        {% else %}
+                            <div class="no-image">No image available</div>
+                        {% endif %}
                         
-                        <label for="end_date_{{ car.id }}">End Date:</label>
-                        <input type="date" id="end_date_{{ car.id }}" name="end_date" required>
+                        <!-- Booking Form -->
+                        <form action="{{ url_for('book_car', car_id=car.id) }}" method="POST">
+                            <div class="form-group">
+                                <label for="start_date_{{ car.id }}">Start Date:</label>
+                                <input type="date" id="start_date_{{ car.id }}" name="start_date" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="end_date_{{ car.id }}">End Date:</label>
+                                <input type="date" id="end_date_{{ car.id }}" name="end_date" required>
+                            </div>
 
-                        <button type="submit" style="margin-top: 5px;">Book</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
+                            <button type="submit" class="btn">Book Now</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </body>
 </html>

@@ -3,13 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Success</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
+    <title>Booking Success - Car Rental Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
-    <h1>Booking Successful!</h1>
-    <p>Your car has been booked successfully.</p>
-    <a href="/">Go to Home</a>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/all_cars">All Cars</a></li>
+            <li><a href="/my_cars">My Cars</a></li>
+        </ul>
+    </nav>
+
+    <div class="container flex-center" style="flex-direction: column; min-height: 70vh;">
+        <div class="alert alert-success" style="max-width: 600px; padding: 30px;">
+            <h1 style="color: var(--secondary-color);">Booking Successful!</h1>
+            <p style="font-size: 1.2rem; margin: 20px 0;">Your car has been booked successfully.</p>
+            
+            <div class="text-center">
+                <a href="/" class="btn btn-success">Go to Home</a>
+                <a href="/all_cars" class="btn">Browse More Cars</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
